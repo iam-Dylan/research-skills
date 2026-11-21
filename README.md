@@ -20,6 +20,17 @@ EOF
 The import makes Claude load `USAGE.md` in every session and project. It assumes the repository is cloned to
 `~/Documents/research-skills`.
 
+A `UserPromptSubmit` hook repeats the core rules with every prompt, so they stay in view in long sessions. It
+prints [`hooks/reminder.txt`](hooks/reminder.txt). Add it to `~/.claude/settings.json`; this keeps any hooks
+already there:
+
+```bash
+S=~/.claude/settings.json
+jq '.hooks.UserPromptSubmit = ((.hooks.UserPromptSubmit // []) + [{"hooks":[{"type":"command","command":"cat \"$HOME/Documents/research-skills/hooks/reminder.txt\" 2>/dev/null || true","timeout":5}]}])' "$S" > "$S.tmp" && mv "$S.tmp" "$S"
+```
+
+To change the reminder, edit `hooks/reminder.txt`; the hook reads it fresh each time. To turn it off, use `/hooks`.
+
 Keep `shared-references/` next to the other skills, because the ARIS skills read it through `../shared-references/`.
 
 ### ARIS, with Claude as the reviewer

@@ -1,0 +1,4 @@
+Research-skill routing (full table: ~/Documents/research-skills/USAGE.md, loaded through ~/.claude/CLAUDE.md):
+- If this prompt is a research task (literature, ideas, experiment planning, results, paper writing, figures, review, citations, rebuttal, slides, poster), call the matching skill from USAGE.md with the Skill tool before doing the work.
+- The project's CLAUDE.md and the user's saved feedback override skill defaults. Skills marked (explicit) run only when the user asks for them. The ARIS reviewer is Claude: add `— reviewer: claude` when the project has no .aris/reviewer.json, and never fall back to Codex.
+- If this prompt is not a research task, ignore this note.
