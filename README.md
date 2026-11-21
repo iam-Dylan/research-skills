@@ -3,11 +3,22 @@
 The Claude Code skills I use for research: ideas, literature, experiments, paper writing, review, rebuttal, slides.
 Snapshot of `~/.claude/skills/` taken on 2026-11-21; the files are copied unchanged.
 
+**Which skill for which task: [USAGE.md](USAGE.md).**
+
 ## Install
 
 ```bash
 cp -R skills/* ~/.claude/skills/
+cat >> ~/.claude/CLAUDE.md <<'EOF'
+
+# Research skills
+For any research task, follow the routing below and call the listed skill before doing the work yourself.
+@~/Documents/research-skills/USAGE.md
+EOF
 ```
+
+The import makes Claude load `USAGE.md` in every session and project. It assumes the repository is cloned to
+`~/Documents/research-skills`.
 
 Keep `shared-references/` next to the other skills, because the ARIS skills read it through `../shared-references/`.
 
