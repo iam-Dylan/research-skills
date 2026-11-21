@@ -11,6 +11,38 @@ cp -R skills/* ~/.claude/skills/
 
 Keep `shared-references/` next to the other skills, because the ARIS skills read it through `../shared-references/`.
 
+### ARIS, with Claude as the reviewer
+
+The ARIS skills also need the ARIS checkout, for its `tools/` helpers and reviewer bridges. Their default reviewer is
+Codex; here it is switched to Claude Code through ARIS's own `claude-code` route.
+
+```bash
+git clone https://github.com/wanshuiyin/Auto-claude-code-research-in-sleep ~/.claude/Auto-claude-code-research-in-sleep
+git -C ~/.claude/Auto-claude-code-research-in-sleep checkout 4ba94ae   # version these skills were copied from
+mkdir -p ~/.aris && echo "$HOME/.claude/Auto-claude-code-research-in-sleep" > ~/.aris/repo
+
+claude mcp add claude-review -s user \
+  -e CLAUDE_BIN=$HOME/.local/bin/claude \
+  -e ANTHROPIC_DEFAULT_HAIKU_MODEL=claude-opus-5-5 \
+  -e CLAUDE_REVIEW_DEBUG_LOG=$HOME/.aris/claude-review-debug.log \
+  -e CLAUDE_REVIEW_STATE_DIR=$HOME/.aris/claude-review \
+  -- python3 ~/.claude/Auto-claude-code-research-in-sleep/mcp-servers/claude-review/server.py
+```
+
+Then, in each project's git root:
+
+```bash
+mkdir -p .aris && echo '{"backend": "claude-code"}' > .aris/reviewer.json
+```
+
+- `ANTHROPIC_DEFAULT_HAIKU_MODEL` keeps the reviewer session on a single model. If Haiku also runs, the bridge cannot
+  report which model reviewed, and `review_gate.py` returns `review_unavailable`.
+- The debug log holds full prompts, so it is moved from `/tmp` to `~/.aris`.
+- Claude reviewing Claude is same-family. ARIS records a positive verdict as `provisional`, not `accepted`.
+- `— reviewer: codex` on a single call still selects Codex, if a Codex MCP is installed.
+
+### Plugins
+
 These are installed as plugins, not copied here:
 
 ```
@@ -33,8 +65,7 @@ license before making this repository public.
 | research-paper-writing | [master-cai/Research-Paper-Writing-Skills](https://github.com/master-cai/Research-Paper-Writing-Skills) @ 77e7c2c |
 | human | [mindangg/human-skill](https://github.com/mindangg/human-skill) @ 0a5dea8 (MIT) |
 | remove-ai-marks | Guillaume Meyer and contributors (MIT) |
-| paper-reviewer | Aaron Storey |
-| paper-review-pipeline, academic-search | source not recorded |
+| academic-search | source not recorded |
 | advisor-review, advisor-revise | mine: review a draft against the advisor's five criteria A–E, then write the revisions in the advisor's format |
 
 `advisor-review` and `advisor-revise` quote an advisor's review and a paper under double-blind review. Keep this
