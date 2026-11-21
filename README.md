@@ -57,9 +57,10 @@ Then, in each project's git root:
 mkdir -p .aris && echo '{"backend": "claude-code"}' > .aris/reviewer.json
 ```
 
-- [`aris/claude-reviewer.sh`](aris/claude-reviewer.sh) starts the reviewer with every hook off: user, project and
-  plugin hooks, including the prompt reminder below. The reviewer still loads the CLAUDE.md files and the memory
-  index of the project it is called from.
+- [`aris/claude-reviewer.sh`](aris/claude-reviewer.sh) starts the reviewer with no hooks (user, project or
+  plugin, including the prompt reminder below), no `CLAUDE.md` or `AGENTS.md` files and no auto-memory. The
+  author's setup and saved writing preferences never reach the reviewer. It sees only the prompt and the files it
+  is asked to read.
 - `ANTHROPIC_DEFAULT_HAIKU_MODEL` keeps the reviewer session on a single model. If Haiku also runs, the bridge cannot
   report which model reviewed, and `review_gate.py` returns `review_unavailable`.
 - The debug log holds full prompts, so it is moved from `/tmp` to `~/.aris`.
