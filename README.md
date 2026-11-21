@@ -44,7 +44,7 @@ git -C ~/.claude/Auto-claude-code-research-in-sleep checkout 4ba94ae   # version
 mkdir -p ~/.aris && echo "$HOME/.claude/Auto-claude-code-research-in-sleep" > ~/.aris/repo
 
 claude mcp add claude-review -s user \
-  -e CLAUDE_BIN=$HOME/.local/bin/claude \
+  -e CLAUDE_BIN=$HOME/Documents/research-skills/aris/claude-reviewer.sh \
   -e ANTHROPIC_DEFAULT_HAIKU_MODEL=claude-opus-5-5 \
   -e CLAUDE_REVIEW_DEBUG_LOG=$HOME/.aris/claude-review-debug.log \
   -e CLAUDE_REVIEW_STATE_DIR=$HOME/.aris/claude-review \
@@ -57,6 +57,9 @@ Then, in each project's git root:
 mkdir -p .aris && echo '{"backend": "claude-code"}' > .aris/reviewer.json
 ```
 
+- [`aris/claude-reviewer.sh`](aris/claude-reviewer.sh) starts the reviewer with every hook off: user, project and
+  plugin hooks, including the prompt reminder below. The reviewer still loads the CLAUDE.md files and the memory
+  index of the project it is called from.
 - `ANTHROPIC_DEFAULT_HAIKU_MODEL` keeps the reviewer session on a single model. If Haiku also runs, the bridge cannot
   report which model reviewed, and `review_gate.py` returns `review_unavailable`.
 - The debug log holds full prompts, so it is moved from `/tmp` to `~/.aris`.
