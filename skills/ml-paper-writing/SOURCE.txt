@@ -1,0 +1,1 @@
+source: https://github.com/Orchestra-Research/AI-Research-SKILLs 20-ml-paper-writing/ml-paper-writing @ 773a529, templates/ omitted (installed 2026-11-11)

@@ -1,0 +1,1 @@
+source: https://github.com/master-cai/Research-Paper-Writing-Skills @ 77e7c2c (installed 2026-11-11)
